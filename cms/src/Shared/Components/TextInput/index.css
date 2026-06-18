@@ -1,0 +1,23 @@
+.input-container {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.input-title {
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+
+.input-body {
+  margin: 0;
+  padding-left: 10px;
+  border-radius: 16px;
+  height: 40px;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: rgba(22, 35, 50, 0.8);
+  border: none;
+  color: white;
+}

@@ -1,0 +1,26 @@
+.title {
+  margin-top: 20px;
+
+  margin-bottom: 0;
+}
+.row-options-1 {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+  /* margin: 20px; */
+  justify-content: right;
+}
+
+.div-input-search {
+  display: flex;
+  width: 180px;
+}
+
+.tag {
+  margin-inline: auto;
+}
+.div-buttons {
+  display: flex;
+  width: 140px;
+  margin-left: 10px;
+}

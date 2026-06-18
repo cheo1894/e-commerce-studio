@@ -1,0 +1,14 @@
+.Button-body {
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  height: 40px;
+  border-radius: 16px;
+  background-color: #4e7cb1;
+  color: white;
+}
+
+.Button-title {
+  margin: 0;
+  padding: 0;
+}

@@ -1,0 +1,26 @@
+.auth-background {
+  height: 99.81vh;
+  width: 99.81vw;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.auth-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  max-width: 400px;
+  /* background-color: red; */
+  padding-inline: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+.Form-body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
+}

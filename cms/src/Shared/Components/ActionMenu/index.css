@@ -1,0 +1,13 @@
+.icon-container {
+  display: flex;
+  align-items: center;
+  max-width: 120px;
+  flex: 1;
+  margin: auto;
+}
+
+.icon-style {
+  display: "flex";
+  flex-direction: "row";
+  flex: 1;
+}

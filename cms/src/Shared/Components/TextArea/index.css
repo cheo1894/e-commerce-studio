@@ -1,0 +1,23 @@
+.text-area-container {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+}
+.text-area-component {
+  display: block;
+  flex-direction: row;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100px;
+  max-height: 100px;
+  resize: vertical;
+  border-radius: 16px;
+  background-color: rgba(22, 35, 50, 0.8);
+  border: none;
+}
+
+.input-title {
+  margin-bottom: 5px;
+  margin-left: 5px;
+}

@@ -1,0 +1,7 @@
+.modal-row {
+  margin: 20px;
+  /* background-color: red; */
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}

@@ -1,0 +1,24 @@
+.select-container {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  justify-content: end;
+  /* background-color: red; */
+}
+
+.select-title {
+  margin: 0;
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+
+.select-body {
+  box-sizing: border-box;
+  background: rgba(22, 35, 50, 0.8);
+  height: 40px;
+  border-radius: 16px;
+  padding-inline: 10px;
+  color: white;
+  border: none;
+}

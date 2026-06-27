@@ -5,7 +5,7 @@ import useProductsList from "./useProductsList";
 function useProductsPage() {
   const [openModal, setOpenModal] = useState(false);
   const [search, setSearch] = useState("");
-  const { productsList, loading } = useProductsList();
+  const { productsList, loading, GetProducts } = useProductsList();
 
   return {
     openModal,
@@ -14,6 +14,7 @@ function useProductsPage() {
     setSearch,
     productsList,
     loading,
+    GetProducts,
   };
 }
 

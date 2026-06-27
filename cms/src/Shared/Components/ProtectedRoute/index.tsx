@@ -1,14 +1,18 @@
-// import { getAccessToke } from "@/Shared/Utils/AuthToken";
-// import { type JSX } from "react";
-// import { Navigate, useLocation } from "react-router";
+import useGetUser from "@/Modules/Auth/Presentation/hooks/useGetUser";
+import { type JSX } from "react";
+import { Navigate, useLocation } from "react-router";
 
-// type Props = { children: JSX.Element };
+type Props = { children: JSX.Element };
 
-// function index({ children }: Props) {
-//   const location = useLocation();
-//   const token = getAccessToke();
-//   if (!token) return <Navigate to="/auth" replace state={{ from: location }} />;
-//   return children;
-// }
+function index({ children }: Props) {
+  const { user, loading } = useGetUser();
+  const location = useLocation();
 
-// export default index;
+  if (loading) return <div>Cargando...</div>;
+
+  if (Object.keys(user).length === 0)
+    return <Navigate to="/auth" replace state={{ from: location }} />;
+  return children;
+}
+
+export default index;

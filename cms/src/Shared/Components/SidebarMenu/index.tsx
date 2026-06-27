@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import LinkTo from "../LinkTo";
 import "./index.css";
+import { useNavigate } from "react-router";
 
 type buttonprops = {
   name: string;
@@ -11,6 +12,7 @@ type buttonprops = {
 type Props = { buttonList: buttonprops[] };
 
 function Index({ buttonList }: Props) {
+  const navigate = useNavigate();
   const [visible, setVisible] = useState<number | null>(null);
   return (
     <>
@@ -40,7 +42,15 @@ function Index({ buttonList }: Props) {
                     if (b.to && b.to !== "") {
                       return (
                         <li className="item-link">
-                          <LinkTo key={index2} to={b.to!} title={b.name} />
+                          <LinkTo
+                            key={index2}
+                            to="#"
+                            title={b.name}
+                            onClick={() => {
+                              // console.log("navegando");
+                              navigate(b.to!);
+                            }}
+                          />
                         </li>
                       );
                     }

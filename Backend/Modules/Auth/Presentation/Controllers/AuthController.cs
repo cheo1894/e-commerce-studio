@@ -50,11 +50,6 @@ namespace Backend.Modules.Auth.Presentation.Controllers
 
             if (string.IsNullOrWhiteSpace(request.RefreshToken) || string.IsNullOrWhiteSpace(request.SessionId))
                 return Unauthorized("Faltan datos de refresh token");
-
-
-
-
-
             var storedToken = await _context.RefreshTokens.FirstOrDefaultAsync(rt => rt.SessionId == request.SessionId
             && rt.ExpiresAtUtc > DateTime.UtcNow);
 
@@ -66,17 +61,13 @@ namespace Backend.Modules.Auth.Presentation.Controllers
 
             var user = await _context.Users.FindAsync(storedToken.UserId);
 
-
-
             if (user == null) return Unauthorized("Usuario no encontrado");
 
             var newAccessToken = _jwtTokenService.GenerateToken(user.UserId, user.UserName, user.RoleId);
 
             storedToken.RevokedAtUtc = DateTime.UtcNow;
-
             _context.RefreshTokens.Attach(storedToken);
             _context.RefreshTokens.Update(storedToken).State = EntityState.Modified;
-
 
             var newRefreshToke = _jwtTokenService.GenerateRefreshToken();
             var newhashed = _jwtTokenService.HashRefreshToken(newAccessToken);
@@ -104,8 +95,6 @@ namespace Backend.Modules.Auth.Presentation.Controllers
                 sessionId = newSessionId,
 
             });
-
-
 
         }
     }

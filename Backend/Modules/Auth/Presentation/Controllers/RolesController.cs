@@ -1,9 +1,11 @@
 using Backend.Modules.Auth.Application.DTOs;
+using Backend.Modules.Auth.Application.Interfaces;
 using Backend.Modules.Auth.Domain.Entities;
 using Backend.Modules.Auth.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Json;
 
 namespace Backend.Modules.Auth.Presentation.Controllers
@@ -13,70 +15,35 @@ namespace Backend.Modules.Auth.Presentation.Controllers
     [ApiController]
     public class RolesController : ControllerBase
     {
-
-        private AuthDbContext _context;
-        public RolesController(AuthDbContext context)
+        private IRoleService _service;
+        public RolesController(IRoleService service)
         {
-            _context = context;
+            _service = service;
         }
 
 
         [HttpGet]
-        public async Task<IEnumerable<RoleDto>> GetRoles()
-        {
-            var res = await _context.Roles.ToListAsync();
+        public async Task<IEnumerable<RoleDto>> GetRoles() => await _service.Get();
 
-            return res.Select(r => new RoleDto()
-            {
-                RoleId = r.RoleId,
-                RoleName = r.RoleName,
-
-            });
-
-        }
 
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<RoleDto>> GetRoloByID(int id)
+        public async Task<ActionResult<RoleDto>> GetRoleByID(int id)
         {
-            var res = await _context.Roles.FindAsync(id);
-
-            if (res == null)
-            {
-                return NotFound();
-            }
-
-            var roleDto = new RoleDto()
-            {
-                RoleId = res.RoleId,
-                RoleName = res.RoleName,
-            };
-            return roleDto;
+            var res = await _service.GetById(id);
+            return res != null ? Ok(res) : NotFound();
         }
 
 
         [HttpPost]
         public async Task<ActionResult<RoleDto>> AddRole(RoleInsertDto dto)
         {
-            var role = new Role()
-            {
-                RoleName = dto.RoleName,
-                Active = true
-            };
-            await _context.Roles.AddAsync(role);
-            await _context.SaveChangesAsync();
-
-            var roleDto = new RoleDto()
-            {
-                RoleId = role.RoleId,
-                RoleName = role.RoleName
-            };
+            var res = await _service.Add(dto);
             return CreatedAtAction(
-                nameof(GetRoloByID),
-                new { id = role.RoleId },
-
-                roleDto
+                nameof(GetRoleByID),
+                new { id = res.RoleId },
+                res
             );
         }
 
@@ -84,50 +51,17 @@ namespace Backend.Modules.Auth.Presentation.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<RoleDto>> Update(int id, RoleUpdateDto dto)
         {
-            var res = await _context.Roles.FindAsync(id);
-
-            res.RoleName = dto.RoleName;
-
-
-            _context.Roles.Attach(res);
-            _context.Roles.Update(res).State = EntityState.Modified;
-
-            var roleDto = new RoleDto()
-            {
-                RoleId = res.RoleId,
-                RoleName = res.RoleName
-            };
-            return Ok(roleDto);
-
-
+            var res = await _service.Update(id, dto);
+            return res != null ? Ok(res) : NotFound();
         }
 
 
         [HttpDelete("delete/{id}")]
-        public async Task<ActionResult<RoleDto>> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-
-            var res = await _context.Roles.FindAsync(id);
-
-
-            res.Active = false;
-
-            _context.Roles.Attach(res);
-            _context.Roles.Update(res).State = EntityState.Modified;
-
-
-            await _context.SaveChangesAsync();
-
-
-
-            var roleDto = new RoleDto()
-            {
-                RoleId = res.RoleId,
-                RoleName = res.RoleName
-            };
-
-            return Ok(roleDto);
-
+            var res = await _service.Delete(id);
+            var message = new { message = "Eliminado satisfactoriamente" };
+            return res == true ? Ok(message) : NotFound();
         }
     }
 }

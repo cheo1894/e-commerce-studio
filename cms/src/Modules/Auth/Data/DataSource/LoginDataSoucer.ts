@@ -1,5 +1,6 @@
 import { Api } from "@/Shared/Utils/api";
 import type { loginRequest, LoginResponse } from "../models/LoginModel";
+import type { UserModel } from "../models/UserModel";
 
 export class LoginDatasource {
   private readonly api: Api;
@@ -23,6 +24,15 @@ export class LoginDatasource {
       return true;
     } catch (error) {
       throw new Error(`Error al cerrar sesión: ${error}`);
+    }
+  }
+
+  async getCurrentUser(): Promise<UserModel | null> {
+    try {
+      const res = this.api.get<UserModel>("/api/bff/auth/user");
+      return res as Promise<UserModel>;
+    } catch (error) {
+      return null;
     }
   }
 }

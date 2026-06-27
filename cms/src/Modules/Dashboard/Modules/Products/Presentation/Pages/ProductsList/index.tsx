@@ -3,25 +3,18 @@ import TableHead from "@/Shared/Components/Table/TableHead";
 import TextInput from "@/Shared/Components/TextInput";
 import Button from "@/Shared/Components/Button";
 import "@/Styles/ListPages.css";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { ProductDataSource } from "../../../Data/Sources/ProductDataSource";
-import { ProductImplementations } from "../../../Data/Implementations/ProductImplementations";
-import { ProductsUseCases } from "../../../Domain/UseCases/GetProductsUseCase";
 import type { ProductEntity } from "../../../Domain/Entities/ProductEntity";
-import index from "@/Shared/Components/ButtonLinks";
 import TableData from "@/Shared/Components/Table/TableData";
 import Decimal from "decimal.js";
 import { format } from "date-fns";
-import { CgEye, CgPen, CgTrash } from "react-icons/cg";
 import ActionMenu from "@/Shared/Components/ActionMenu";
-import Modal from "@/Shared/Components/Modal";
 import AddProductModal from "../../Components/AddProductModal";
 import useProductsPage from "../../hooks/useProductsPage";
 
 type Props = {};
 
 function Index({}: Props) {
-  const { openModal, setOpenModal, search, setSearch, productsList, loading } =
+  const { openModal, setOpenModal, search, productsList, GetProducts } =
     useProductsPage();
 
   return (
@@ -82,6 +75,10 @@ function Index({}: Props) {
       </Table>
       <AddProductModal
         onClose={() => setOpenModal(false)}
+        onSave={async () => {
+          setOpenModal(false);
+          await GetProducts();
+        }}
         visible={openModal}
       />
     </>

@@ -3,12 +3,14 @@ import type { ProductEntity } from "../../Domain/Entities/ProductEntity";
 import { ProductDataSource } from "../../Data/Sources/ProductDataSource";
 import { ProductImplementations } from "../../Data/Implementations/ProductImplementations";
 import { ProductsUseCases } from "../../Domain/UseCases/GetProductsUseCase";
+import { Api } from "@/Shared/Utils/api";
 
 function useProductsList() {
   const calledRef = useRef(false);
   const [productsList, setProductsList] = useState<ProductEntity[]>([]);
   const [loading, setLoading] = useState(false);
-  const productsDatasource = useMemo(() => new ProductDataSource(), []);
+  const api = new Api();
+  const productsDatasource = useMemo(() => new ProductDataSource(api), []);
   const productImplementations = useMemo(
     () => new ProductImplementations(productsDatasource),
     [],
@@ -44,6 +46,7 @@ function useProductsList() {
   return {
     productsList,
     loading,
+    GetProducts,
   };
 }
 

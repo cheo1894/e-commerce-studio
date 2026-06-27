@@ -5,11 +5,16 @@ type Props = {
   Title: string;
 };
 
-function Index({ Title }: Props) {
+function Index({ Title, ...rest }: Props) {
   return (
     <div className="text-area-container">
       {Title && <h5 className="input-title">{Title}</h5>}
-      <textarea className="text-area-component" name="" id=""></textarea>
+      <textarea
+        className="text-area-component"
+        name=""
+        id=""
+        {...rest}
+      ></textarea>
     </div>
   );
 }

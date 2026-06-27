@@ -9,20 +9,13 @@ namespace Backend.Modules.Auth.Application.Services
 {
     public class UsersService : IUserService
     {
-
         private IUsersRepository _repository;
-
         public UsersService(IUsersRepository repository)
         {
-
-
             _repository = repository;
         }
-
-
         public async Task<IEnumerable<UserDto>> Get()
         {
-
             var users = await _repository.Get();
             return users.Select(u => new UserDto()
             {
@@ -42,7 +35,6 @@ namespace Backend.Modules.Auth.Application.Services
             {
                 return null;
             }
-
             return new UserDto()
             {
 
@@ -51,7 +43,6 @@ namespace Backend.Modules.Auth.Application.Services
                 UserName = user.UserName
 
             };
-
         }
 
 

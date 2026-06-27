@@ -1,4 +1,5 @@
 using Backend.Modules.ProductCatalog.Application.DTOs;
+using Backend.Modules.ProductCatalog.Application.Interfaces;
 using Backend.Modules.ProductCatalog.Domain.entities;
 using Backend.Modules.ProductCatalog.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authorization;
@@ -14,44 +15,24 @@ namespace Backend.Modules.ProductCatalog.Presentation.Controllers
     {
 
 
-        private ProductCatalogDbContext _context;
 
-        public CategoryController(ProductCatalogDbContext context)
+        private readonly ICategoryService _service;
+
+        public CategoryController(ICategoryService service)
         {
-            _context = context;
+
+            _service = service;
         }
 
 
         [HttpGet]
-        public async Task<IEnumerable<CategoryDto>> Get()
-        {
-            var categories = await _context.Categories.Where(c => c.Active == true).ToListAsync();
-            return categories.Select(c => new CategoryDto()
-            {
-                CategoryId = c.CategoryId,
-                CategoryName = c.CategoryName,
-                Active = c.Active,
-            }).ToList();
-        }
+        public async Task<IEnumerable<CategoryDto>> Get() => await _service.Get();
 
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryDto>> GetById(int id)
         {
-
-            var category = await _context.Categories.FindAsync(id);
-
-            if (category == null || category.Active == false)
-            {
-                return NotFound();
-            }
-
-            var categoryDto = new CategoryDto()
-            {
-                CategoryId = category.CategoryId,
-                CategoryName = category.CategoryName,
-                Active = category.Active
-            };
-            return Ok(categoryDto);
+            var category = await _service.GetById(id);
+            return category != null ? Ok(category) : NotFound();
         }
 
 
@@ -59,77 +40,28 @@ namespace Backend.Modules.ProductCatalog.Presentation.Controllers
         [HttpPost("add")]
         public async Task<ActionResult<CategoryDto>> Add(CategoryInsertDto dto)
         {
-
-            var category = new Category()
-            {
-                CategoryName = dto.CategoryName,
-                Active = true
-            };
-            await _context.Categories.AddAsync(category);
-            await _context.SaveChangesAsync();
-
-            var categoryDto = new CategoryDto()
-            {
-                CategoryId = category.CategoryId,
-                CategoryName = category.CategoryName,
-                Active = category.Active
-            };
+            var res = await _service.Add(dto);
             return CreatedAtAction(
                 nameof(GetById),
-                new { id = categoryDto.CategoryId },
-                categoryDto
+                new { id = res.CategoryId },
+                res
             );
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<CategoryDto>> Update(int id, CategoryUpdateDto dto)
         {
-
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-            category.CategoryName = dto.CategoryName;
-            category.Active = dto.Active;
-
-            _context.Categories.Attach(category);
-            _context.Categories.Update(category).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-
-            var categoryDto = new CategoryDto()
-            {
-                CategoryId = category.CategoryId,
-                CategoryName = category.CategoryName,
-                Active = category.Active
-            };
-            return Ok(categoryDto);
+            var category = await _service.Update(id, dto);
+            return category != null ? Ok(category) : NotFound();
         }
 
 
         [HttpPut("delete/{id}")]
-        public async Task<ActionResult<CategoryDto>> SoftDelete(int id)
+        public async Task<ActionResult<bool>> Delete(int id)
         {
-
-            var category = await _context.Categories.FindAsync(id);
-
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            category.Active = false;
-
-            _context.Categories.Attach(category);
-            _context.Categories.Update(category).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-
-            return new CategoryDto()
-            {
-                CategoryId = category.CategoryId,
-                CategoryName = category.CategoryName,
-                Active = category.Active
-            };
+            var category = await _service.Delete(id);
+            var message = new { message = "Categoría borada exitosamente" };
+            return category == true ? Ok(message) : NotFound();
         }
 
 

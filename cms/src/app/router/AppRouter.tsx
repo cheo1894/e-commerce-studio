@@ -6,7 +6,7 @@ import { DashboardRoutes } from "@/Modules/Dashboard/Presentation/route.tsx";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Navigate to="auth" />,
+    element: <Navigate to="/dashboard/products" />,
   },
   AuthRoutes,
   DashboardRoutes,

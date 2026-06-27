@@ -5,11 +5,11 @@ type Props = {
   options: CategoryEntity[];
 };
 
-function Index({ options, title }: Props) {
+function Index({ options, title, ...rest }: Props) {
   return (
     <div className="select-container">
       <h5 className="select-title">{title}</h5>
-      <select className="select-body" id="color" name="color">
+      <select className="select-body" id="color" name="color" {...rest}>
         <option value="">Seleccione...</option>
         {options &&
           options.map((o, index) => {

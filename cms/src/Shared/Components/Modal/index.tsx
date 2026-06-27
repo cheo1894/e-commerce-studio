@@ -21,7 +21,7 @@ function index({ visible, children, style, title, onClose }: Props) {
           <Spacer type={"column"} />
           <RxCross2 size={30} onClick={onClose} />
         </div>
-        {children}
+        <div className="modal-body">{children}</div>
       </div>
     </div>
   );

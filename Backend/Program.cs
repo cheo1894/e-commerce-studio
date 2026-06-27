@@ -15,6 +15,11 @@ using Backend.Modules.ProductCatalog.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Backend.Modules.Auth.Domain.Entities;
+using Backend.Modules.ProductCatalog.Domain.entities;
+using Backend.Modules.ProductCatalog.Application.Services;
+using Backend.Modules.ProductCatalog.Domain.Interfaces;
+using Backend.Modules.ProductCatalog.Infrastructure.Persistence.Repositories;
 // using Microsoft.OpenApi;
 
 
@@ -33,10 +38,6 @@ builder.Services.AddCors(options =>
 // Add services to the container.
 
 builder.Services.AddControllers();
-
-
-
-
 
 //JWT Config
 
@@ -76,15 +77,20 @@ builder.Services.AddScoped<IuserNameProvider, AuthUserNameProvider>();
 //Services
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UsersService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IProductCatalogService, ProductCatalogService>();
 builder.Services.AddScoped<ITokenCache, MemoryTokenCache>();
 builder.Services.AddScoped<ITokenProxyService, TokenProxyServices>();
 builder.Services.AddScoped<IRefreshTokenService, RefreshTokeService>();
+builder.Services.AddScoped<ICategoryService, CategoryServices>();
 //Repositories
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IProductCatalogRepository, ProductCatalogRepository>();
 
 //Db Connections=========================================================================
-builder.Services.AddDbContext<AuthDbContext>(options =>
+builder.Services.AddDbContextFactory<AuthDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseConnection"));
 });

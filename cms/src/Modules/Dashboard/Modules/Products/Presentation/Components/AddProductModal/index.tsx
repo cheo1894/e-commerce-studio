@@ -7,14 +7,28 @@ import useCategoriesList from "../../hooks/useCategoriesList";
 import useAddProductForm from "../../hooks/useAddProductForm";
 import Button from "@/Shared/Components/Button";
 import Spacer from "@/Shared/Components/Spacer";
+import useUpdateProductForm from "../../hooks/useUpdateProductForm";
+import type { AddProductFormData } from "../../Schemas/AddProductSchema";
+
+type formType = "submit" | "update";
 
 type Props = {
+  type?: formType;
   visible: boolean;
   onClose: () => void;
   onSave?: () => void;
+  formData?: AddProductFormData;
+  productId?: number;
 };
 
-function Index({ visible, onClose, onSave }: Props) {
+function Index({
+  visible,
+  onClose,
+  onSave,
+  type = "submit",
+  formData,
+  productId,
+}: Props) {
   const { list } = useCategoriesList();
   const {
     register,
@@ -25,7 +39,10 @@ function Index({ visible, onClose, onSave }: Props) {
     isSubmitted,
     onSubmit,
     reset,
-  } = useAddProductForm({ onSave });
+  } =
+    type === "submit"
+      ? useAddProductForm({ onSave })
+      : useUpdateProductForm({ onSave, formData, visible, productId });
 
   return (
     <Modal
@@ -36,7 +53,7 @@ function Index({ visible, onClose, onSave }: Props) {
         onClose();
       }}
     >
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit((data) => onSubmit(data, productId))}>
         <div className="modal-row">
           <div style={{ width: "100%" }}>
             <TextInput
@@ -135,7 +152,13 @@ function Index({ visible, onClose, onSave }: Props) {
           <div style={{ width: "200px" }}>
             <Button
               Type="submit"
-              Title={isSubmitting ? "Guardando..." : "Guardar"}
+              Title={
+                isSubmitting
+                  ? "Saving..."
+                  : type === "submit"
+                    ? "Save"
+                    : "Update"
+              }
               disabled={isSubmitting}
             />
           </div>

@@ -88,6 +88,7 @@ builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IProductCatalogRepository, ProductCatalogRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 //Db Connections=========================================================================
 builder.Services.AddDbContextFactory<AuthDbContext>(options =>

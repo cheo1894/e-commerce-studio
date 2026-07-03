@@ -17,7 +17,7 @@ namespace Backend.Modules.ProductCatalog.Infrastructure.Persistence.Repositories
 
         }
         public async Task<IEnumerable<Product>> Get() => await _context.Products.Include(p => p.Category).Where(p => p.Active == true).ToListAsync();
-        public async Task<Product> GetById(int id) => await _context.Products.FindAsync(id);
+        public async Task<Product> GetById(int id) => await _context.Products.Include(p => p.Category).FirstOrDefaultAsync(p => p.ProductId == id);
         public async Task Add(Product product) => await _context.Products.AddAsync(product);
         public void Update(Product product)
         {

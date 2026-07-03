@@ -10,20 +10,31 @@ import { ProductImplementations } from "../../Data/Implementations/ProductImplem
 import { AddProductUseCase } from "../../Domain/UseCases/AddProductUseCase";
 import type { AddproductParams } from "../../Domain/UseCases/Params/AddProductParams";
 import Decimal from "decimal.js";
+import { useEffect, useMemo } from "react";
+import { UpdateProductUseCase } from "../../Domain/UseCases/updateProductUseCase";
 
 type Props = {
   onSave?: () => void;
+  formData?: AddProductFormData;
+  visible?: boolean;
+  productId: number | undefined;
 };
 
-function useAddProductForm({ onSave }: Props) {
-  const defaultValues: AddProductFormData = {
-    name: "",
+function useUpdateProductForm({
+  onSave,
+  formData = {
+    name: "arepa",
     price: 0, // inicial 0, pero la validación min(0.1) fallará hasta que se corrija
     quantity: 0, // inicial 0, min(1) fallará hasta que se corrija
     image: "",
     category: 0,
     description: "",
-  };
+  },
+  visible,
+  productId,
+}: Props) {
+  const defaultValues: AddProductFormData = formData;
+
   const {
     register,
     handleSubmit,
@@ -34,11 +45,19 @@ function useAddProductForm({ onSave }: Props) {
     resolver: zodResolver(AddProductSchema),
     defaultValues,
   });
+
+  useEffect(() => {
+    if (visible === true && formData) {
+      console.log("Datos para el formulario>>>", formData);
+      reset(defaultValues);
+    }
+  }, [visible]);
   const api = new Api();
   const dataSoucer = new ProductDataSource(api);
   const implementation = new ProductImplementations(dataSoucer);
-  const useCase = new AddProductUseCase(implementation);
-  const onSubmit = async (data: AddProductFormData) => {
+  const useCase = new UpdateProductUseCase(implementation);
+
+  const onSubmit = async (data: AddProductFormData, id: number | undefined) => {
     const decimalPrice = new Decimal(data.price);
     try {
       const payload: AddproductParams = {
@@ -50,9 +69,11 @@ function useAddProductForm({ onSave }: Props) {
         imageUrl: data.image,
       };
 
-      const request = await useCase.execute(payload);
+      if (!id) throw new Error("No se encontró el Id");
+
+      const request = await useCase.execute(id, payload);
       if (request === null) {
-        setError("root", { message: "Error en la carga del producto" });
+        setError("root", { message: "Error al actualizar el producto" });
         return;
       }
 
@@ -61,7 +82,9 @@ function useAddProductForm({ onSave }: Props) {
         reset();
       }
     } catch (error) {
-      setError("root", { message: `Error en la carga del producto: ${error}` });
+      setError("root", {
+        message: `Error al actualizar el producto: ${error}`,
+      });
     }
   };
 
@@ -77,4 +100,4 @@ function useAddProductForm({ onSave }: Props) {
   };
 }
 
-export default useAddProductForm;
+export default useUpdateProductForm;

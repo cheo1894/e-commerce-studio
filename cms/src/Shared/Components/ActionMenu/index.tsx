@@ -1,4 +1,3 @@
-import React from "react";
 import { CgEye, CgPen, CgTrash } from "react-icons/cg";
 import "./index.css";
 
@@ -11,9 +10,9 @@ type Props = {
 function Index({ onView, onEdit, onDelete }: Props) {
   return (
     <div className="icon-container">
-      <CgEye onClick={onView} className="icon-style" />
-      <CgPen onClick={onEdit} className="icon-style" />
-      <CgTrash onClick={onDelete} className="icon-style" />
+      <CgEye onClick={onView} className="action-icon" />
+      <CgPen onClick={onEdit} className="action-icon" />
+      <CgTrash onClick={onDelete} className="action-icon" />
     </div>
   );
 }

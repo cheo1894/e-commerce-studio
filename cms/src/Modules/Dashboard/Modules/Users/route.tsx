@@ -1,6 +1,6 @@
 import { lazy } from "react";
-const UserList = lazy(() => import("./Presentation/Pages/UserList"));
-const UserRoles = lazy(() => import("./Presentation/Pages/UserRoles"));
+const UserList = lazy(() => import("./Presentation/Pages/UserList/index"));
+const UserRoles = lazy(() => import("./Presentation/Pages/UserRoles/index"));
 export const UserRoutes = {
   path: "users",
 

@@ -59,7 +59,7 @@ namespace Backend.Modules.ProductCatalog.Presentation.Controllers
 
         }
 
-        [HttpPut("delete/{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
             var res = await _service.Delete(id);

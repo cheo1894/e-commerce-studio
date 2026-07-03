@@ -1,7 +1,7 @@
 import { Children, lazy } from "react";
 import AuthLayout from "./Layouts/AuthLayout";
-const LoginPage = lazy(() => import("./Pages/LoginPage/index"));
-const RegisterPage = lazy(() => import("./Pages/RegisterPage/index"));
+const LoginPage = lazy(() => import("./Pages/LoginPage"));
+const RegisterPage = lazy(() => import("./Pages/RegisterPage"));
 
 export const AuthRoutes = {
   path: "auth",

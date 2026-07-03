@@ -10,10 +10,12 @@ import { format } from "date-fns";
 import ActionMenu from "@/Shared/Components/ActionMenu";
 import AddProductModal from "../../Components/AddProductModal";
 import useProductsPage from "../../hooks/useProductsPage";
+import { useNavigate } from "react-router";
 
 type Props = {};
 
 function Index({}: Props) {
+  const navigate = useNavigate();
   const { openModal, setOpenModal, search, productsList, GetProducts } =
     useProductsPage();
 
@@ -66,7 +68,11 @@ function Index({}: Props) {
                 <TableData>{createdAt}</TableData>
                 <TableData>{updatedAt}</TableData>
                 <TableData>
-                  <ActionMenu />
+                  <ActionMenu
+                    onView={() => {
+                      navigate(`/dashboard/products/product/${p.productId}`);
+                    }}
+                  />
                 </TableData>
               </tr>
             );

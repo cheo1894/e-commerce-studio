@@ -36,7 +36,7 @@ function useLoginForm() {
         password: data.password,
       });
       if (result !== null) {
-        navigate("/dashboard/products");
+        navigate("/dashboard/products/list");
         return;
       }
       setError("root", { type: "manual", message: "Credenciales invalidas" });

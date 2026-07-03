@@ -20,7 +20,7 @@ function index({}: Props) {
     {
       name: "Products",
       subroutes: [
-        { name: "Products", to: "/dashboard/products" },
+        { name: "Products", to: "/dashboard/products/list" },
         { name: "Categories", to: "/dashboard/products/categories" },
       ],
     },

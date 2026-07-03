@@ -54,6 +54,7 @@ namespace Backend.Modules.ProductCatalog.Application.Services
 
             if (product == null || product.Active == false) return null;
 
+            var userName = await _userNameProvider.GetUserNameByIdAsync(product.CreatedById);
 
             var productoDto = new ProductDto()
             {
@@ -66,7 +67,9 @@ namespace Backend.Modules.ProductCatalog.Application.Services
                 UpdatedAt = product.UpdatedAt,
                 ImageUrl = product.ImageUrl,
                 CategoryId = product.CategoryId,
-                CreatedById = product.CategoryId
+                CreatedById = product.CategoryId,
+                Category = product.Category.CategoryName,
+                CreatedByName = userName
 
             };
 
@@ -128,7 +131,8 @@ namespace Backend.Modules.ProductCatalog.Application.Services
             product.UpdatedAt = DateTime.UtcNow;
             product.ImageUrl = dto.ImageUrl;
             product.CategoryId = dto.CategoryId;
-            product.CreatedById = dto.CategoryId;
+            product.CreatedById = product.CreatedById;
+
 
 
             _repo.Update(product);

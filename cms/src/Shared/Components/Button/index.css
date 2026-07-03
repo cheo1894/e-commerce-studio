@@ -4,8 +4,15 @@
   border: none;
   height: 40px;
   border-radius: 16px;
-  background-color: #4e7cb1;
   color: white;
+}
+
+.normal {
+  background-color: #4e7cb1;
+}
+
+.danger {
+  background-color: #c82909;
 }
 
 .Button-title {
